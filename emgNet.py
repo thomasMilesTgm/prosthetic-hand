@@ -64,10 +64,9 @@ def loadTrainingData(data, labels, sample_rate, block_size, epoch_length, return
 
     :return x: input data (num_blocks, num_channels, block_size)
 
-    :return y: labels (num_blocks,)
+    :return y: labels (num_blocks, num_labels)
     """
-    num_blocks = int(epoch_length / (sample_rate*block_size))   # number of data blocks
-
+    num_blocks = int(epoch_length*1000 / (sample_rate*block_size))   # number of data blocks
     label_dict = {}
 
     x = np.zeros((num_blocks, NUM_CHANNELS, block_size))
@@ -85,32 +84,28 @@ def loadTrainingData(data, labels, sample_rate, block_size, epoch_length, return
     i = 0               # block index
     int_ix = 0
 
+
     for time in d_raw[0]:
+        # print((time - t0)/1000)
 
         # epoch is full
-        if time - t0 >= epoch_length:
+        if (time - t0)/1000 >= epoch_length or i >= num_blocks:
             return x, y
 
         for n in range(block_size):
-
             # only add the point if enough time has passed since last tick
-            if time - t_last < sample_rate:
+            if d_raw[0, j] - t_last < sample_rate:
                 j += 1
                 pass
 
             # if we have filled a block, start a new one
-            if time - t0 >= sample_rate*block_size:
-                print("time: "+str(time)+" t0:"+str(t0))
-                print(time - t0)
-
+            if int_ix >= block_size:
                 if return_label:
-                    print(label)
                     label = label / block_size
                     # for l in range(len(label)):     # average label
                     #     label[l] = l / j
-
-                    print("label is : "+str(y[i]))
                     y[i] = label
+                    label = np.zeros(shape=NUM_LABELS)
 
                 # increment block index
                 int_ix = 0
@@ -118,7 +113,7 @@ def loadTrainingData(data, labels, sample_rate, block_size, epoch_length, return
                 break
 
             # make sure we havent run out of data
-            if j >= len(d_raw):
+            if j >= len(d_raw[0]):
 
                 if return_label:
                     label = label / int_ix
@@ -131,22 +126,18 @@ def loadTrainingData(data, labels, sample_rate, block_size, epoch_length, return
 
             # Otherwise add data and labels
             for k in range(NUM_CHANNELS):
+
                 x[i, k, int_ix] = d_raw[k, j]
 
             if return_label:
                 # Since label may change during a block, we're going to average the label, keep a cumulative sum
-                print("raw label: "+str(l_raw[1][j]))
-
                 this_label, label_dict = l_to_out(l_raw[1][j], label_dict)
                 label += this_label
-
-                print("cumulative label array: " + str(label))
 
             # increment raw data index
             int_ix += 1
             j += 1
             t_last = time
-
     return x, y
 
 
@@ -209,12 +200,18 @@ def test_load(sample_rate, block_size, epoch_length):
 
     x, y = loadTrainingData(data, label, sample_rate, block_size, epoch_length)
     print("Data Loaded")
-    print("x shape: (" + str(len(x)) + "," + str(len(x[0])) + "," + str(len(x[0,0])) + ")")
-    print("y shape: (" + str(len(y)) + "," + str(len(y[0])) + ")")
-    print("Sample data block:\nx[0] = \n" + str(x[0]))
-    print("y[0] = \n" + str(y[0]))
+    print("x shape (num_blocks, num_channels, block_size): (" + str(len(x)) + "," + str(len(x[0])) + "," + str(len(x[0,0])) + ")")
+    print("y shape (num_blocks, num_labels): (" + str(len(y)) + "," + str(len(y[0])) + ")")
+    print("x, y = \n")
+    for i in range(len(x)):
+        if x[i,0,0] == 0:
+            break
+        print(x[i])
+        print("____________________________________________________")
+        print(y[i])
 
-
+        print("____________________________________________________")
+        print("____________________________________________________")
 
 
 def main(num_epochs=NUM_EPOCHS):
@@ -302,6 +299,6 @@ def main(num_epochs=NUM_EPOCHS):
 
 if __name__ == '__main__':
     # main()
-    test_load(sample_rate=10, block_size=10, epoch_length=5000)
+    test_load(sample_rate=100, block_size=10, epoch_length=60)
 
 
