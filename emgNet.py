@@ -31,7 +31,7 @@ NUM_EPOCHS = 10
 BLOCK_SIZE = 180
 
 # Number of blocks in a batch
-BATCH_SIZE = 10
+BATCH_SIZE = 180
 
 # Number of gestures to learn
 NUM_LABELS = 11
@@ -212,7 +212,7 @@ def test_load(sample_rate, block_size, epoch_length):
     for i in range(len(x)):
         if x[i,0,0] == 0:
             break
-        print(x[i])
+        print(len(x))
         print("____________________________________________________")
         print(y[i])
 
@@ -220,13 +220,15 @@ def test_load(sample_rate, block_size, epoch_length):
         print("____________________________________________________")
 
 def iterate_minibatches(x_train, y_train, batch_size=BATCH_SIZE):
+
     x = []
     y = []
+    i=0
 
-    for j in range(len(x_train[0])):
-        for i in range(BATCH_SIZE):
-            x[j] = x_train[i*BATCH_SIZE + j]
-            y[j] = y_train[i * BATCH_SIZE + j]
+    while i < len(x_train[0,0]):
+        x.append(np.array(x_train[i:(i+batch_size):1, :, :]))
+        y.append(np.array(y_train[i:(i+batch_size):1, :]))
+        i += batch_size
 
     return x, y
 
@@ -237,7 +239,7 @@ def main(num_epochs=NUM_EPOCHS):
     # Recurrent layers expect input of shape
     # (batch size, SEQ_LENGTH, num_features)
 
-    l_in = lasagne.layers.InputLayer(shape=(None, NUM_CHANNELS, None))
+    l_in = lasagne.layers.InputLayer(shape=(None, NUM_CHANNELS, BLOCK_SIZE))
 
     batchsize, seqlen, _ = l_in.input_var.shape
 
@@ -304,8 +306,22 @@ def main(num_epochs=NUM_EPOCHS):
     except KeyboardInterrupt:
         pass
 
+def test_iteratemini():
+    data = "/home/tmiles/data/prosthetic/dummy/1536640459.6213417/data.npy"
+    label = "/home/tmiles/data/prosthetic/dummy/1536640459.6213417/labels.npy"
+
+    x, y = loadTrainingData(data, label, SAMPLE_RATE, BLOCK_SIZE, EPOCH_TIME)
+    x_mini, y_mini = iterate_minibatches(x, y)
+    for batch in x_mini:
+        print(batch)
+
+    print(str(len(x_mini)) + " batches made")
+
+
 if __name__ == '__main__':
     main()
-    #test_load(sample_rate=100, block_size=10, epoch_length=60)
+    # test_load(sample_rate=100, block_size=10, epoch_length=60)
+    # test_iteratemini()
+
 
 
