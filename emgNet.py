@@ -76,8 +76,8 @@ def loadTrainingData(data, labels, sample_rate, block_size, epoch_length, return
     num_blocks = int(epoch_length*1000 / (sample_rate*block_size))   # number of data blocks
     label_dict = {}
 
-    x = np.zeros((num_blocks, NUM_CHANNELS, block_size))
-    y = np.zeros((num_blocks, NUM_LABELS))
+    x = np.zeros((num_blocks, NUM_CHANNELS, block_size), dtype='float32')
+    y = np.zeros((num_blocks, NUM_LABELS), dtype='float32')
     label = np.zeros(shape=NUM_LABELS)
 
     # open data and label files
@@ -88,7 +88,7 @@ def loadTrainingData(data, labels, sample_rate, block_size, epoch_length, return
     t_last = t0         # most recent timestamp
 
     j = 0               # raw data index
-    i = 0               # block index
+    i = 0               # block indexcl
     int_ix = 0
 
 
@@ -339,10 +339,10 @@ def main(num_epochs=NUM_EPOCHS):
             val_err = 0
             val_acc = 0
             val_batches = 0
-            x_val, y_val = iterate_minibatches(x, y)
+            x_val, y_val = iterate_minibatches(x, y, batch_size=BATCH_SIZE*3)
 
             for i in range(len(x_val)):
-                err, acc = val_fn(inputs, targets)
+                err, acc = val_fn(inputs[i], targets[i])
                 val_err += err
                 val_acc += acc
                 val_batches += 1
