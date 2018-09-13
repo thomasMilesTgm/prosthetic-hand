@@ -60,7 +60,7 @@ void loop()
   packet[5] = analogRead(A0); // c0 
   packet[6] = analogRead(A1); // c1
   packet[7] = analogRead(A2); // c2
-  packet[8] = analogRead(A3); // c3
+  packet[8] = analogRead(A3); // c3+
 
     Serial.print("t!");
     Serial.print(packet[0]);

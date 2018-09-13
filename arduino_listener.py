@@ -1,4 +1,5 @@
 import serial
+from serial import SerialException
 import numpy as np
 from tempfile import TemporaryFile
 import threading
@@ -8,11 +9,12 @@ import os
 import string
 
 NUM_DIMS = 9
-MAX_LENGTH = 20
+MAX_LENGTH = 10000
 KEYS = ['t', 'l', 'x', 'y', 'z', 'c0_', 'c1_', 'c2_', 'c3_']
 
 data_dir = '/home/tmiles/data/prosthetic/dummy/'
 port = '/dev/ttyACM0'
+status = '/home/tmiles/data/prosthetic/status/'
 
 class Listener:
 
@@ -50,6 +52,8 @@ class Listener:
 
     def listen(self):
 
+
+
         tnow = time()
         os.system('mkdir ' + data_dir + str(tnow))
 
@@ -66,12 +70,15 @@ class Listener:
         tick = 0
         while tick < MAX_LENGTH:
             try:
+                stat = open(status + "stat", "w")
+                stat.write("Listener is writing tick number: "+str(tick)+"\n current label is "+chr(self.current_class))
+                stat.close()
+
                 ard.reset_input_buffer()
                 serial_in = ard.readline()
                 parsed = self.parseInput(serial_in)
                 if parsed != None:
 
-                    # TODO, save here every time so crashing is ok
                     # add the label data
                     labels[0,tick] = parsed['t']    # timestamp
                     labels[1,tick] = parsed['l']    # label
@@ -89,19 +96,15 @@ class Listener:
                     np.save(data_dir + str(tnow) + '/labels.npy', labels)
 
                     tick = tick + 1
-
+                    stat.close()
             except (KeyboardInterrupt):
-                print(tick)
                 ard.flushInput()
+                stat = open(status + "stat", "w")
+                stat.write("Listener stopped at tick: "+str(tick)+"\n last label was "+str(labels[1, tick]))
+                stat.close()
                 pass
 
-
-        print(data)
-
-
-
-
-
+        # print(data)
 
         print("MAX_LENGTH reached, saved to .npy files at: " + data_dir + str(tnow))
         exit()
@@ -109,11 +112,10 @@ class Listener:
 
 
     def update_label(self, L):
-        self.current_class = L
+        self.current_class = ord(L.split("\n")[0])
         print("label is now: " + str(L))
 
 
-# TODO THIS MAKES IT RECORD FOREVER -_-
 def listen(ard_listener):
 
     print ('listener started')
@@ -131,7 +133,7 @@ def listen(ard_listener):
 if __name__ == '__main__':
     threads = []
 
-    ard_listener = Listener(init_class='r')
+    ard_listener = Listener(init_class='N')
     threads.append(threading.Thread(target=ard_listener.listen))
     threads.append(threading.Thread(target=listen, args=(ard_listener,), daemon=True))
 
