@@ -5,6 +5,7 @@ from theano import shared
 from theano.tensor import fft
 import lasagne
 import os, glob
+import time
 
 # Data sampling rate (ms)
 SAMPLE_RATE = 100
@@ -25,13 +26,13 @@ GRAD_CLIP = 100
 PRINT_FREQ = 1000
 
 # Number of epochs to train the net
-NUM_EPOCHS = 10
+NUM_EPOCHS = 100
 
 # Block Size (number of points in a block)
-BLOCK_SIZE = 180
+BLOCK_SIZE = 50
 
 # Number of blocks in a batch
-BATCH_SIZE = 180
+BATCH_SIZE = 90
 
 # Number of gestures to learn
 NUM_LABELS = 11
@@ -227,10 +228,29 @@ def iterate_minibatches(x_train, y_train, batch_size=BATCH_SIZE):
 
     while i < len(x_train[0,0]):
         x.append(np.array(x_train[i:(i+batch_size):1, :, :]))
-        y.append(np.array(y_train[i:(i+batch_size):1, :]))
-        i += batch_size
+        y_ = encode_output(np.array(y_train[i:(i+batch_size):1, :]))
 
+        y.append(y_)
+        i += batch_size
+    # print(y)
     return x, y
+
+
+def encode_output(y):
+
+    encoded = np.zeros(shape=len(y), dtype='int32')
+    for i in range(len(y)):
+        # print("range: "+str(len(y)))
+        # print(i)
+        # print(y)
+        # print((y[i,:]))
+        # print()
+        # print(np.argmax(y[i,:]))
+        # print()
+        encoded[i] = np.argmax(y[i,:])
+
+    return encoded
+
 
 def main(num_epochs=NUM_EPOCHS):
     print("Building network ...")
@@ -261,6 +281,7 @@ def main(num_epochs=NUM_EPOCHS):
     l_out = lasagne.layers.DenseLayer(l_forward_2, num_units=NUM_LABELS, W=lasagne.init.Normal(),
                                       nonlinearity=lasagne.nonlinearities.softmax)
 
+
     # Theano tensor for the targets
     target_values = T.lvector('target_output')
 
@@ -285,23 +306,53 @@ def main(num_epochs=NUM_EPOCHS):
     # In order to produce the probability distribution of the prediction, we compile a function called probs.
     probs = theano.function([l_in.input_var], network_output, allow_input_downcast=True)
 
+    test_prediction = lasagne.layers.get_output(l_out, deterministic=True)
+    test_loss = lasagne.objectives.categorical_crossentropy(test_prediction,
+                                                            target_values)
+    test_loss = test_loss.mean()
+
+    test_acc = T.mean(T.eq(T.argmax(test_prediction, axis=1), target_values),
+                      dtype=theano.config.floatX)
+
+    val_fn = theano.function([l_in.input_var, target_values], [test_loss, test_acc])
+
     print("Training ...")
     data = "/home/tmiles/data/prosthetic/dummy/1536640459.6213417/data.npy"
     label = "/home/tmiles/data/prosthetic/dummy/1536640459.6213417/labels.npy"
 
     x, y = loadTrainingData(data, label, SAMPLE_RATE, BLOCK_SIZE, EPOCH_TIME)
 
-    p = 0
+    train_batches = 0
+    start_time = time.time()
     try:
         for epoch in range(NUM_EPOCHS):
 
             avg_cost = 0
-            for batch in iterate_minibatches(x, y):
+            inputs, targets = iterate_minibatches(x, y)
 
-                intputs, targets = batch
-                avg_cost += train(intputs, targets)
+            # Train
+            for i in range(len(inputs)):
+                avg_cost += train(inputs[i], targets[i])
+                train_batches += 1
 
-            print("Epoch {} average loss = {}".format(1.0 * PRINT_FREQ / NUM_EPOCHS * BLOCK_SIZE, avg_cost / PRINT_FREQ))
+            # Do a pass over the validation set
+            val_err = 0
+            val_acc = 0
+            val_batches = 0
+            x_val, y_val = iterate_minibatches(x, y)
+
+            for i in range(len(x_val)):
+                err, acc = val_fn(inputs, targets)
+                val_err += err
+                val_acc += acc
+                val_batches += 1
+
+            print("Epoch {} of {} took {:.3f}s".format(
+                epoch + 1, num_epochs, time.time() - start_time))
+            print("  training loss:\t\t{:.6f}".format(avg_cost / train_batches))
+            print("  validation loss:\t\t{:.6f}".format(val_err / val_batches))
+            print("  validation accuracy:\t\t{:.2f} %".format(
+                val_acc / val_batches * 100))
 
     except KeyboardInterrupt:
         pass
