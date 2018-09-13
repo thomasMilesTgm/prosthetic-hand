@@ -6,7 +6,7 @@ from theano.tensor import fft
 import lasagne
 import os, glob
 
-# Data sampling rate
+# Data sampling rate (ms)
 SAMPLE_RATE = 100
 
 # FFT rate (ms)
@@ -27,8 +27,11 @@ PRINT_FREQ = 1000
 # Number of epochs to train the net
 NUM_EPOCHS = 10
 
-# Batch Size
-BATCH_SIZE = 180
+# Block Size (number of points in a block)
+BLOCK_SIZE = 180
+
+# Number of blocks in a batch
+BATCH_SIZE = 10
 
 # Number of gestures to learn
 NUM_LABELS = 11
@@ -38,6 +41,9 @@ raw_data = []
 
 # Number of input channels including timestamps
 NUM_CHANNELS = 8
+
+# length of an epoch (sec)
+EPOCH_TIME = 60
 
 
 def load_data(data_dir="/home/tmiles/data/prosthetic/dummy/"):
@@ -213,6 +219,16 @@ def test_load(sample_rate, block_size, epoch_length):
         print("____________________________________________________")
         print("____________________________________________________")
 
+def iterate_minibatches(x_train, y_train, batch_size=BATCH_SIZE):
+    x = []
+    y = []
+
+    for j in range(len(x_train[0])):
+        for i in range(BATCH_SIZE):
+            x[j] = x_train[i*BATCH_SIZE + j]
+            y[j] = y_train[i * BATCH_SIZE + j]
+
+    return x, y
 
 def main(num_epochs=NUM_EPOCHS):
     print("Building network ...")
@@ -221,7 +237,7 @@ def main(num_epochs=NUM_EPOCHS):
     # Recurrent layers expect input of shape
     # (batch size, SEQ_LENGTH, num_features)
 
-    l_in = lasagne.layers.InputLayer(shape=(None, None, NUM_CHANNELS))
+    l_in = lasagne.layers.InputLayer(shape=(None, NUM_CHANNELS, None))
 
     batchsize, seqlen, _ = l_in.input_var.shape
 
@@ -271,34 +287,25 @@ def main(num_epochs=NUM_EPOCHS):
     data = "/home/tmiles/data/prosthetic/dummy/1536640459.6213417/data.npy"
     label = "/home/tmiles/data/prosthetic/dummy/1536640459.6213417/labels.npy"
 
-    x, y = loadTrainingData(data, label, SAMPLE_RATE, BATCH_SIZE, NUM_EPOCHS*BATCH_SIZE*SAMPLE_RATE)
+    x, y = loadTrainingData(data, label, SAMPLE_RATE, BLOCK_SIZE, EPOCH_TIME)
 
     p = 0
     try:
-        # for n in range(NUM_EPOCHS):
+        for epoch in range(NUM_EPOCHS):
 
-        avg_cost = 0
-        # for i in range(BATCH_SIZE):
+            avg_cost = 0
+            for batch in iterate_minibatches(x, y):
 
-        x_ = np.zeros((BATCH_SIZE, int(BATCH_SIZE/10), NUM_CHANNELS))
-        y_ = np.zeros((BATCH_SIZE, NUM_LABELS))
+                intputs, targets = batch
+                avg_cost += train(intputs, targets)
 
-        x_[0,0,0] = x[3]
-        y_ = y[0,0,:]
-        # for a in range(BATCH_SIZE) :
-        #     for b in range(int(BATCH_SIZE/10)):
-        #         x_[a,b] = x[a,b]
-        #         y_[a] = y[a,b]
-        print("calling train")
-        avg_cost += train(x_, y_)
-
-        print("Epoch {} average loss = {}".format(1.0*PRINT_FREQ/NUM_EPOCHS*BATCH_SIZE, avg_cost / PRINT_FREQ))
+            print("Epoch {} average loss = {}".format(1.0 * PRINT_FREQ / NUM_EPOCHS * BLOCK_SIZE, avg_cost / PRINT_FREQ))
 
     except KeyboardInterrupt:
         pass
 
 if __name__ == '__main__':
-    # main()
-    test_load(sample_rate=100, block_size=10, epoch_length=60)
+    main()
+    #test_load(sample_rate=100, block_size=10, epoch_length=60)
 
 
