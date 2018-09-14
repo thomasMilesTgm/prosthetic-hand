@@ -1,6 +1,6 @@
 
 \documentclass[11pt,3p]{report}
-\usepackage[left=2cm, right=2cm, top=4cm]{geometry} 
+\usepackage[left=1.75cm, right=1.75cm, top=4cm]{geometry} 
 
 \makeatletter
 \def\ps@pprintTitle{%
@@ -11,19 +11,16 @@
 \makeatother
 
 \newcommand{\tabitem}{~~\llap{\textbullet}~~}
-
-\usepackage{multicol,lipsum}
 \usepackage{enumitem}
+\usepackage{multicol,lipsum}
 \usepackage{amssymb}
 \usepackage{makecell}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{fancyhdr}
 \graphicspath{ {./} }
-
 \renewcommand\thesection{\arabic{section}}
 \renewcommand\thesubsection{\thesection.\arabic{subsection}}
-
 
 \begin{document}
 
@@ -130,7 +127,7 @@ This report describes the methodology used during the pre-prototyping phase for 
  } \\
  \hline
  $D_4$ & $Obj_3$ & $D_4 = \cfrac{p_{range}}{100} \times d  \times I $ &  \makecell[l]{
- $d$: disproportionality coefficient \\
+$d$: disproportionality coefficient \\
  $I$: irregularity coefficient ($1 \implies$ regular) \\
  $p_{range}$ percentage deviation from \\
  human hand norm
@@ -156,6 +153,13 @@ The majority of parts could be printed in ABS using a fused deposition modelling
 		
 		
 			\begin{enumerate}[noitemsep]
+						\item \textbf{Felxor tendon using pulleys} {
+							
+				\includegraphics[scale=0.5]{pulley.PNG}
+				A more novel tendon design based on \cite{mottardunderactuated}, which provides a slight mechanical advantage over design 1, and has a smoother closing action since pulley placement distributes load between finger digits more evenly. 
+			}
+						\vfill\null
+			\columnbreak
 			\item \textbf{Flexor tendon through sheaths} {
 
 %TODO figures are fukd
@@ -164,15 +168,12 @@ The majority of parts could be printed in ABS using a fused deposition modelling
 				This method of articulating the finger relies on closely mimicking a real finger and using a tendon to provide one degree of freedom to each finger and the thumb. These tendons will be controlled by motors either in the hand or wrist. Multiple fingers can be attached to a single motor, reducing degrees of freedom, but potentially improving other characteristics such as weight.
 				
 			}
-			\item \textbf{Felxor tendon using pulleys} {
-							
-				\includegraphics[scale=0.5]{pulley.PNG}
-				A more novel tendon design based on \cite{mottardunderactuated}, which provides a slight mechanical advantage over design 1, and has a smoother closing action since pulley placement distributes load between finger digits more evenly. 
-			}		
-			
+
+\pagebreak
 			\item \textbf{Geared metacarpo-phalangeal joint} {
 			
-				\includegraphics[scale=0.5]{gear.PNG}
+				\includegraphics[scale=0.45]{gear.PNG}
+				
 				This method of articulating the finger ensures the finger closes evenly, using a tendon for the upper joint, attached to the same motor that drives the gear that closes the lower joint, prevents one joint closing at a different rate to the others. Furthermore, transmission of power to the finger via a gear will allow for actuation in both directions, and is less prone to failure than fishing line, which may snap under extreme loads.
 			}		
 			\end{enumerate}
@@ -183,6 +184,8 @@ The majority of parts could be printed in ABS using a fused deposition modelling
         \item \textbf{Pin joint} {
         As depicted in the rough designs a simple pin joint has the advantages that it is robust and easy to repair, however its rigidity also means it is susceptible to shocks. In addition as it requires overlap of the two pieces, it becomes a likely place for failure under load.
         }
+        \vfill\null
+			\columnbreak
         \item \textbf{Elastic joint} {
         
         \includegraphics[scale=0.4]{Elasticjoint.PNG}
@@ -191,10 +194,10 @@ Using a semi rigid joint like this one, again based on \cite{mottardunderactuate
 The ability of some adduction and abduction of the fingers would allow the hand to behave in a more natural way, although, in terms of aesthetics the necessity of external elastic bands reduces its lifelike appearance.
         }
         \item \textbf{Silicone} {
+        
         While not appropriate for all joints, manufacturing the upper joint from flexible polyurethane filament and/or silicone cast from printed moulds, would allow it natural flexibility. This would greatly improve impact resistance and may result in a more lifelike movement and appearance.
 
-However, if rigidity is too low then the ability of the prosthesis to effectively grip and manipulate objects would be affected.
-        }
+However, if rigidity is too low then the ability of the prosthesis to effectively grip and manipulate objects would be affected.        }
 		\end{enumerate}
 
 	
@@ -204,11 +207,7 @@ However, if rigidity is too low then the ability of the prosthesis to effectivel
 		
 		In order to satisfy essential criteria $E_3$, the hand must be able to, at minimum, open and close with a force of 65 newtons. This can be achieved using a single degree of freedom (DOF), closing all fingers simultaneously. Each finger transmission design explored have a single degree of freedom for this reason. 
 		
-		The total number of constraints and DOF's for a finger depends on the joint morphology.
-		
-		TODO elaborate
-
-
+		The total number of constraints and DOF's for a finger depends on the joint morphology, however regarding the degrees of freedom being actuated, each design allows for one per finger if desired, and tendons/gears can be linked to a single motor to share a DOF.
 
 	\section{Thumb}
 	
@@ -223,10 +222,12 @@ To achieve a level of dexterity approaching a human hand, allowing for opposable
 			\includegraphics[scale=0.55]{rigid_thumb.PNG}
 						This design allows for the lower thumb joint and the palm to be 3D printed as part of the same piece, reducing assembly difficulty.
 			}
-
+\vfill\null
+			\columnbreak
 			\item \textbf{Manual operation} {
 				
 				\includegraphics[scale=0.48]{man_thumb.PNG}
+				
 				This joint is manually articulated using the operator's other hand, allowing different thumb orientations to tackle a wider range of tasks. For this to be useful however, the joint needs to be stiff enough to remain in a set position during use. 
 				
 				This can be achieved either using a very snug fit on the pin joint, have a thread on the pin joint by which the user can tighten a nut to lock it in place, or using a spring-ratchet system (pictured below). 
@@ -239,14 +240,17 @@ To achieve a level of dexterity approaching a human hand, allowing for opposable
 				
 				
 			}
+			\vspace{1cm}
 			\item \textbf{Geared} {
+				
 				
 				\includegraphics[scale=0.55]{Driven_thumb.PNG}
 				
 				This method is analogous to the geared joint finger design, however it allows one more degree of freedom since the second joint can be operated independently of opposable rotation. 
 			}		
 			\end{enumerate}	
-		
+		\vfill\null
+			\columnbreak
 		
 		
 	\section{Wrist}
@@ -262,11 +266,14 @@ To achieve a level of dexterity approaching a human hand, allowing for opposable
 			
 				Utilizing the same spring-ratchet design as the manual thumb joint, the ratchet can be disengaged by pulling the hand toward the forearm, thus allowing for free rotation. As with the thumb, disengaging the ratchet is designed to avoid unintended articulation radially during normal use.
 			}	
+					\vfill\null
+			\columnbreak
 			\item \textbf{Planetary gearbox} {
 
 \includegraphics[scale=0.6]{planet.PNG}
 The planetary gearbox design does not require a bearing since the outer ring can be embedded into the hand side of the prosthetic, while planet gears can be made captive using a herringbone tooth pattern. It also allows for a very high gear ratio without the need for multiple step-downs, since 3D printing gives us the ability to manufacture any sized gears required. Due to the number of gears, inaccuracy in 3D printed teeth, and rate of rotation of the sun gear, a planetary system will be a fair amount louder than alternate methods during operation.
 			}	
+			\vspace{1cm}
 			\item \textbf{Belt Drive} {
 
 Belt drives can mitigate the noise factor associated with printed plastic on plastic gears, however achieving high gear ratios may require more than one belt for the same ratio a planetary gearbox could achieve. Furthermore, physical space within the arm may be a concern, since the rotation required is in the axis of the arm, the belt and pulley are limited in size.
@@ -279,77 +286,107 @@ Belt drives can mitigate the noise factor associated with printed plastic on pla
 	\section{Socket}
 		
 		\subsection{Solid, 3D printed}
+		
+		\includegraphics[scale=0.7]{print_socket.PNG}
 		3D printed sockets allow for a high level of customizability in terms of matching the shape and size of the component to the needs of the patient. A fully enclosed shell has the further advantage of providing a housing for sensitive electronics and motors which may be prone to water damage if exposed. 3D printed materials lack the strength of parts made by injection moulding or other traditional manufacturing methods due to layer adhesion weaknesses. Large printed components also are slow to produce, and must be made to order, increasing lead time.
 		
-		The printed socket design fits over the stump and is segmented in two, clasping on either side to firmly hold the prosthetic in place. For amputees with insufficient remaining arm to achieve a stable mount, a second component can be attached to the upper arm to prevent it from falling off or becoming loose. To minimise user discomfort when the arm is clasped to the stump, some type of interface material needs to be used where the prosthetic contacts the user, particularly in areas where the most force is transferred.
-		
-			\subsubsection{Interface materials}		
+		The printed socket design fits over the stump and is segmented in two, clasping on either side to firmly hold the prosthetic in place. For amputees with insufficient remaining arm to achieve a stable mount, a second component can be attached to the upper arm to prevent it from falling off or becoming loose. To minimise user discomfort when the arm is clasped to the stump, some type of interface material needs to be used where the prosthetic contacts the user, particularly in areas where the most force is transferred. The more accurate fit 
+
+\pagebreak
+
+	\subsubsection{Interface materials}		
+
 		\begin{enumerate}[noitemsep]
 		\item \textbf{Moulded silicone} {
 		
 		Silicone moulds can be made relatively simply by injecting silicone into the socket while the user holds their stump in the desired position inside the prosthetic, protected by a plastic film. By moulding the silicone to the shape of the stump in this way, a near perfect fit can be achieved. The quality of the mould may deteriorate over time as the silicone undergoes creep from being deformed at body temperature for the hundreds of hours of its intended life time. 
 		}
+		
 		\item \textbf{Thermo-form EVA foam} {
 		 
-		Ethyl Vinyl Acetate (EVA) is a lightweight polymer foam often used in ski boots. EVA has a softening temperature of $90^{\circ}$C, at which point all the 
+		Ethyl Vinyl Acetate (EVA) is a lightweight polymer foam often used in ski boots (\cite{ski}). EVA has a softening temperature of $90^{\circ}$C, at which point all the semi-crystalline structures are melted. Because of this it can be moulded at a heat just above body temperature, and will hold its form when it cools. Using EVA over silicone is advantageous because it can be remoulded should it deform over time, and during the forming process the prosthetic can be clasped down and worn as normal. Because EVA is formed rather than moulded it will have a less perfect fit that a silicone interface.
 		}
+		
 		\item \textbf{Fabric} {
 		
-		
+		Using a simple fabric cushion removes the need for moulding/forming, however because of this it is unlikely to achieve the same quality of fit, which may cause unpleasant rubbing or blistering in extreme cases.	
 		}
 		\end{enumerate}
+							\vfill\null
+			\columnbreak
+		\subsection{Strap on}
 		
-		\subsection{Non-rigid/Strap on}
+		\includegraphics[scale=0.8]{open_socket.PNG}
+		An alternate to a 3D printed enclosed socket design is an open design similar to the one above (\cite{martin}). This design has the advantage that it can be made from generic components, and exposing the stump avoids discomforts associated with enclosed designs, sweat for example. A major shortcoming in this design is the exposure of electronics, particularly EMG electrodes, batteries, etc. 
 		
-				\pagebreak
-			\end{multicols}	
+
+\newpage
+
+\end{multicols}	
 	\section{Evaluation}
+As it is not possible to accurately assess criteria such as impact resistance without a near completed design, or preferably a prototype, instead each design is given a relative ranking for each of the design criteria where 1 is the best option for that element.
+
 \begin{tabular}{|c|c|c|c|c|c|c|c|c||c|}
 \hline 
  & $E_1$ & $E_2$ & $E_3$ & $E_4$ & $D_1$ & $D_2$ & $D_3$ & $D_4$ & $D_{overall}$ \\ 
 \hline 
-Finger 1. & • & • & • & • & • & • & • & • & •\\ 
+Finger 1. & 1 & 1 & 1 & 1 & 0.7 & 0.8 & 0.8 & 1 & 0.83\\ 
 \hline 
-Finger 2. & • & • & • & • & • & • & • & • & •\\ 
+Finger 2. & 1 & 1 & 1 & 1 & 1 & 1 & 0.5 & 0.8 & 0.76\\ 
 \hline 
-Finger 3. & • & • & • & • & • & • & • & • & •\\ 
+Finger 3. & 1 & 1 & 1 & 1 & 0.8 & 0.5 & 1 & 0.6 & 0.77\\ 
 \hline 
-Joint 1. & • & • & • & • & • & • & • & • & •\\ 
+Joint 1. & 1 & 1 & 1 & 1 & 0.5 & • & 0.8 & 0.8 & 0.56\\ 
 \hline 
-Joint 2. & • & • & • & • & • & • & • & • & •\\ 
+Joint 2. & 1 & 1 & 1 & 1 & 0.8 & • & 1 & 0.7 & 0.66\\ 
 \hline 
-Joint 3. & • & • & • & • & • & • & • & • & •\\ 
+Joint 3. & 1 & 1 & 1 & 1 & 1 & • & 0.8 & 1 & 0.67\\ 
 \hline 
-Thumb 1. & • & • & • & • & • & • & • & • & •\\ 
+Thumb 1. & 1 & 1 & 1 & 1 & 0.8 & 1 & 0 & 1 & 0.57\\ 
 \hline 
-Thumb 2. & • & • & • & • & • & • & • & • & •\\ 
+Thumb 2. & 1 & 1 & 1 & 1 & 1 & 1 & 0.5 & 0.7 & 0.74\\ 
 \hline 
-Thumb 3. & • & • & • & • & • & • & • & • & •\\ 
+Thumb 3. & 1 & 1 & 1 & 1 & 0.7 & 0.5 & 1 & 0.8 & 0.79\\ 
 \hline 
-Wrist 1. & • & • & • & • & • & • & • & • & •\\ 
+Wrist 1. & 1 & 1 & 1 & 1 & 1 & 1 & 0 & • & 0.4\\ 
 \hline 
-Wrist 2. & • & • & • & • & • & • & • & • & •\\ 
+Wrist 2. & 1 & 1 & 1 & 1 & 0.8 & 0.5 & 1 & • & 0.65\\ 
 \hline 
-Wrist 3. & • & • & • & • & • & • & • & • & •\\ 
+Wrist 3. & 1 & 1 & 1 & 1 & 0.8 & 0.8 & 0.8 & • & 0.64\\ 
 \hline 
-Socket 1. & • & • & • & • & • & • & • & • & •\\ 
+Socket 1. & 1 & 1 & 1 & 1 & 0.8 & • & • & 1 & 0.32\\ 
 \hline 
-Socket 2. & • & • & • & • & • & • & • & • & •\\ 
+Socket 2. & 1 & 1 & 1 & 1 & 0.7 & • & • & 0.8 & 0.27\\ 
 \hline 
-Socket 3 & • & • & • & • & • & • & • & • & •\\
+Socket 3 & 1 & 1 & 1 & 1 & 1 & • & • & 0.7 & 0.29\\
 \hline
 \hline 
  & $E_1$ & $E_2$ & $E_3$ & $E_4$ & $D_1$ & $D_2$ & $D_3$ & $D_4$ & $D_{overall}$ \\
 \hline 
-Full 1 & • & • & • & • & • & • & • & • & • \\ 
+Combo. 1. & 1 & 1 & 1 & 1 & 0.84 & 1 & 0.45 & 0.78 & 0.71 \\ 
 \hline 
-Full 2 & • & • & • & • & • & • & • & • & • \\ 
+Combo. 2. & 1 & 1 & 1 & 1 & 0.76 & 0.6 & 0.95 & 0.88 & 0.82 \\ 
 \hline 
-Full 3 & • & • & • & • & • & • & • & • & • \\ 
+Combo. 3. & 1 & 1 & 1 & 1 & 0.77 & 0.77 & 0.65 & 0.83 & 0.75 \\ 
 \hline 
-\end{tabular} 
+\end{tabular}\\
+Several combination of elements were assessed listed below
+\{finger\#,Joint\#,Thumb\#,Wrist\#,Socket\#\}
+\begin{enumerate}
+	\item \textbf{Combination 1\{2,1,2,1,2\}} {
+	This combination is produces low noise, with all motors in the arm and no need for printed gears. Very simple production and repair as well as good dust and water resistance. However, the design sacrifices strength and to a lesser extent dexterity to achieve this simplicity.
+	}
+\item \textbf{Combination 2\{1,2,3,2,1\}} {
+	This combination has good dexterity. The more complex fingers, in addition to the flexible joints allows for more natural movements, and the electronically controlled thumb and wrist joint provide the highest degree of freedom for the system. To achieve this however a large amount of gearing is required, and as such the strength of the system is compromised and sound is likely increased.
 
+	}
+\item \textbf{Combination 3\{3,3,1,3,3\}} {
+	This combination has high impact resistance. The use of flexible joints greatly reduces the chances of impact damage and using a belt for the wrist prevents teeth being stripped. However the fixed thumb greatly impacts dexterity, and the use of gears and belts likely increases the noise generated.
+	}
 
+\end{enumerate}
+
+Due to the high weighting of dexterity in the objective function combination 2 which priorities dexterity is the most suitable design. As such this will be the basis of the manufactured prototype.
 
 
 \pagebreak
@@ -424,7 +461,7 @@ Full 3 & • & • & • & • & • & • & • & • & • \\
 
 \end{multicols}
 
-	\newpage
+	\vspace{1cm}
 	\section{Evaluation}
 
 	\begin{tabular}{|c|c|c|c|c|c|c|c|c||c|}
