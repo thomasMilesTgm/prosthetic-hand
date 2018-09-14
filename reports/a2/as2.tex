@@ -1,5 +1,5 @@
 
-\documentclass[12pt,3p]{report}
+\documentclass[11pt,3p]{report}
 \usepackage[left=2cm, right=2cm, top=4cm]{geometry} 
 
 \makeatletter
@@ -13,12 +13,16 @@
 \newcommand{\tabitem}{~~\llap{\textbullet}~~}
 
 \usepackage{multicol,lipsum}
+\usepackage{enumitem}
 \usepackage{amssymb}
 \usepackage{makecell}
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{fancyhdr}
 \graphicspath{ {./} }
+
+\renewcommand\thesection{\arabic{section}}
+\renewcommand\thesubsection{\thesection.\arabic{subsection}}
 
 
 \begin{document}
@@ -121,11 +125,15 @@ This report describes the methodology used during the pre-prototyping phase for 
 
  $D_3$ & $Obj_1$ & $D_3 =  \cfrac{\sum_{n=1}^{n=\text{DOF}} \left(k_n \cdot \text{min}\{\frac{M_{RS}}{M_{RS_{max}}},1\} \right)}{\text{DOF}}$ &  \makecell[l]{
  $M_{RS_n}$: Rotation speed (degree n, $^\circ$/s). \\
- $M_{RS_{max}}$: $230^\circ$/s
+ $M_{RS_{max}}$: $230^\circ$/s \\
+ $k_n$: Classification accuracy of degree $n$
  } \\
  \hline
  $D_4$ & $Obj_3$ & $D_4 = \cfrac{p_{range}}{100} \times d  \times I $ &  \makecell[l]{
- **variable definitions***
+ $d$: disproportionality coefficient \\
+ $I$: irregularity coefficient ($1 \implies$ regular) \\
+ $p_{range}$ percentage deviation from \\
+ human hand norm
  } \\
  
  \hline
@@ -142,12 +150,12 @@ This report describes the methodology used during the pre-prototyping phase for 
 	\section{Fingers}
 For all finger designs, all structural elements are designed to be 3D printed unless otherwise specified. This is due to the high strength and low weight, but most importantly, as per e-NABLES current procedure, it allows for the necessary fast turnaround.
 
-The majority of parts could be printed in ABS using a fused deposition modelling (FDM) printer. Certain parts, such as small gears, pulleys, etc, require greater accuracy than is possible using FDM. Digital light processing (DLP) resin printers provide a useful alternative for producing these small, custom parts. Printers such as the Anycubic Photon xxCITATIONxx are low cost and can be used for the manufacture of these components.
+The majority of parts could be printed in ABS using a fused deposition modelling (FDM) printer. Certain parts, such as small gears, pulleys, etc, require greater accuracy than is possible using FDM. Digital light processing (DLP) resin printers provide a useful alternative for producing these small, custom parts. Printers such as the Anycubic Photon~\cite{photon} are low cost and can be used for the manufacture of these components.
 	
 		\subsection{Transmission}
 		
 		
-			\begin{enumerate}
+			\begin{enumerate}[noitemsep]
 			\item \textbf{Flexor tendon through sheaths} {
 
 %TODO figures are fukd
@@ -159,9 +167,8 @@ The majority of parts could be printed in ABS using a fused deposition modelling
 			\item \textbf{Felxor tendon using pulleys} {
 							
 				\includegraphics[scale=0.5]{pulley.PNG}
-				A more novel tendon design based on xxCITATIONxx, which provides a slight mechanical advantage over design 1, and has a smoother closing action since pulley placement distributes load between finger digits more evenly. 
-			}
-\pagebreak			
+				A more novel tendon design based on \cite{mottardunderactuated}, which provides a slight mechanical advantage over design 1, and has a smoother closing action since pulley placement distributes load between finger digits more evenly. 
+			}		
 			
 			\item \textbf{Geared metacarpo-phalangeal joint} {
 			
@@ -172,21 +179,21 @@ The majority of parts could be printed in ABS using a fused deposition modelling
 			
 		\subsection{Joints}
 
- \begin{enumerate}
+ \begin{enumerate}[noitemsep]
         \item \textbf{Pin joint} {
         As depicted in the rough designs a simple pin joint has the advantages that it is robust and easy to repair, however its rigidity also means it is susceptible to shocks. In addition as it requires overlap of the two pieces, it becomes a likely place for failure under load.
         }
         \item \textbf{Elastic joint} {
         
         \includegraphics[scale=0.4]{Elasticjoint.PNG}
-Using a semi rigid joint like this one, again based on XXXcitationXXX, has the advantage that it is far more resistant to impact force than a rigid joint due to its ability to bend rather than break. In the event of failure, it is also far more likely the failure would be one of the elastic bands, and as such easier to repair.
+Using a semi rigid joint like this one, again based on \cite{mottardunderactuated}, has the advantage that it is far more resistant to impact force than a rigid joint due to its ability to bend rather than break. In the event of failure, it is also far more likely the failure would be one of the elastic bands, and as such easier to repair.
 
 The ability of some adduction and abduction of the fingers would allow the hand to behave in a more natural way, although, in terms of aesthetics the necessity of external elastic bands reduces its lifelike appearance.
         }
         \item \textbf{Silicone} {
         While not appropriate for all joints, manufacturing the upper joint from flexible polyurethane filament and/or silicone cast from printed moulds, would allow it natural flexibility. This would greatly improve impact resistance and may result in a more lifelike movement and appearance.
 
-However, if rigidity is too low then the ability of the prothesis to effectively grip and manipulate objects would be affected.
+However, if rigidity is too low then the ability of the prosthesis to effectively grip and manipulate objects would be affected.
         }
 		\end{enumerate}
 
@@ -210,7 +217,7 @@ To achieve a level of dexterity approaching a human hand, allowing for opposable
 
 		
 		\subsection{Transmission of opposable joint}
-			\begin{enumerate}
+			\begin{enumerate}[noitemsep]
 			\item \textbf{Rigid} {
 			
 			\includegraphics[scale=0.55]{rigid_thumb.PNG}
@@ -250,7 +257,7 @@ To achieve a level of dexterity approaching a human hand, allowing for opposable
 		\subsection{Transmission}	
 		
 			
-			\begin{enumerate}
+			\begin{enumerate}[noitemsep]
 			\item \textbf{Manual operation} {
 			
 				Utilizing the same spring-ratchet design as the manual thumb joint, the ratchet can be disengaged by pulling the hand toward the forearm, thus allowing for free rotation. As with the thumb, disengaging the ratchet is designed to avoid unintended articulation radially during normal use.
@@ -277,7 +284,7 @@ Belt drives can mitigate the noise factor associated with printed plastic on pla
 		The printed socket design fits over the stump and is segmented in two, clasping on either side to firmly hold the prosthetic in place. For amputees with insufficient remaining arm to achieve a stable mount, a second component can be attached to the upper arm to prevent it from falling off or becoming loose. To minimise user discomfort when the arm is clasped to the stump, some type of interface material needs to be used where the prosthetic contacts the user, particularly in areas where the most force is transferred.
 		
 			\subsubsection{Interface materials}		
-		\begin{enumerate}
+		\begin{enumerate}[noitemsep]
 		\item \textbf{Moulded silicone} {
 		
 		Silicone moulds can be made relatively simply by injecting silicone into the socket while the user holds their stump in the desired position inside the prosthetic, protected by a plastic film. By moulding the silicone to the shape of the stump in this way, a near perfect fit can be achieved. The quality of the mould may deteriorate over time as the silicone undergoes creep from being deformed at body temperature for the hundreds of hours of its intended life time. 
@@ -436,6 +443,6 @@ Full 3 & • & • & • & • & • & • & • & • & • \\
 \appendix
 
 \bibliographystyle{plain}
-
+\bibliography{proj}
 
 \end{document}
