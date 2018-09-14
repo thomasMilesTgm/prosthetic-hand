@@ -86,7 +86,7 @@ This report describes the methodology used during the pre-prototyping phase for 
  \tabitem Unit takes less than 2 weeks to manufacture.} \\ 
  \hline
  $E_3$ & $Obj_{1,3}$ & \makecell[l]{Met if: \\
- %\tabitem Unit palmer pinch force is greater than 65N. \\
+ \tabitem Unit palmer pinch force is greater than 65N. \\
  \tabitem Unit closes at 115$^{\circ}$/s. \\
  \tabitem Unit has a idle battery life of 10 hours. \\
  \tabitem Software has gesture classification accuracy above 90\%.} \\
@@ -140,8 +140,9 @@ This report describes the methodology used during the pre-prototyping phase for 
 \begin{multicols}{2}
 
 	\section{Fingers}
-TODO explain general material selection reasoning (in that they are all printed n' shit)
-	
+For all finger designs, all structural elements are designed to be 3D printed unless otherwise specified. This is due to the high strength and low weight, but most importantly, as per e-NABLES current procedure, it allows for the necessary fast turnaround.
+
+The majority of parts could be printed in ABS using a fused deposition modelling (FDM) printer. Certain parts, such as small gears, pulleys, etc, require greater accuracy than is possible using FDM. Digital light processing (DLP) resin printers provide a useful alternative for producing these small, custom parts. Printers such as the Anycubic Photon xxCITATIONxx are low cost and can be used for the manufacture of these components.
 	
 		\subsection{Transmission}
 		
@@ -160,6 +161,8 @@ TODO explain general material selection reasoning (in that they are all printed 
 				\includegraphics[scale=0.5]{pulley.PNG}
 				A more novel tendon design based on xxCITATIONxx, which provides a slight mechanical advantage over design 1, and has a smoother closing action since pulley placement distributes load between finger digits more evenly. 
 			}
+\pagebreak			
+			
 			\item \textbf{Geared metacarpo-phalangeal joint} {
 			
 				\includegraphics[scale=0.5]{gear.PNG}
@@ -168,20 +171,23 @@ TODO explain general material selection reasoning (in that they are all printed 
 			\end{enumerate}
 			
 		\subsection{Joints}
-		
-		\begin{enumerate}
-		\item \textbf{Pin joint} {
-		
-		As pictured above TODO
-		}
-		\item \textbf{Elastic joint} {
-		
-		xxCITATIONxx type
-		}
-		\item \textbf{Silicone} {
-		
-		fully rubber TODO
-		}
+
+ \begin{enumerate}
+        \item \textbf{Pin joint} {
+        As depicted in the rough designs a simple pin joint has the advantages that it is robust and easy to repair, however its rigidity also means it is susceptible to shocks. In addition as it requires overlap of the two pieces, it becomes a likely place for failure under load.
+        }
+        \item \textbf{Elastic joint} {
+        
+        \includegraphics[scale=0.4]{Elasticjoint.PNG}
+Using a semi rigid joint like this one, again based on XXXcitationXXX, has the advantage that it is far more resistant to impact force than a rigid joint due to its ability to bend rather than break. In the event of failure, it is also far more likely the failure would be one of the elastic bands, and as such easier to repair.
+
+The ability of some adduction and abduction of the fingers would allow the hand to behave in a more natural way, although, in terms of aesthetics the necessity of external elastic bands reduces its lifelike appearance.
+        }
+        \item \textbf{Silicone} {
+        While not appropriate for all joints, manufacturing the upper joint from flexible polyurethane filament and/or silicone cast from printed moulds, would allow it natural flexibility. This would greatly improve impact resistance and may result in a more lifelike movement and appearance.
+
+However, if rigidity is too low then the ability of the prothesis to effectively grip and manipulate objects would be affected.
+        }
 		\end{enumerate}
 
 	
@@ -192,12 +198,15 @@ TODO explain general material selection reasoning (in that they are all printed 
 		In order to satisfy essential criteria $E_3$, the hand must be able to, at minimum, open and close with a force of 65 newtons. This can be achieved using a single degree of freedom (DOF), closing all fingers simultaneously. Each finger transmission design explored have a single degree of freedom for this reason. 
 		
 		The total number of constraints and DOF's for a finger depends on the joint morphology.
+		
+		TODO elaborate
 
 
 
 	\section{Thumb}
 	
-		\subsection{Degrees of freedom and constraints}
+		\subsection{Degrees of freedom}
+To achieve a level of dexterity approaching a human hand, allowing for opposable rotation of the thumb is desirable in line with $D_3$. We propose two design concepts to add an extra degree of freedom to the thumb, which also will use the same transmission method as the fingers for flexion. 
 
 		
 		\subsection{Transmission of opposable joint}
@@ -210,12 +219,23 @@ TODO explain general material selection reasoning (in that they are all printed 
 
 			\item \textbf{Manual operation} {
 				
-				\includegraphics[scale=0.45]{man_thumb.PNG}
-				This joint is manually articulated using the operator's other hand, allowing different thumb orientations to tackle a wider range of tasks. For this to be useful however, the joint needs to be stiff enough to remain in a set position during use. This can be achieved either using a very snug fit on the pin joint, have a thread on the pin joint by which the user can tighten a nut to lock it in place, or using a spring-ratchet system similar to that in figure: TODO
+				\includegraphics[scale=0.48]{man_thumb.PNG}
+				This joint is manually articulated using the operator's other hand, allowing different thumb orientations to tackle a wider range of tasks. For this to be useful however, the joint needs to be stiff enough to remain in a set position during use. 
+				
+				This can be achieved either using a very snug fit on the pin joint, have a thread on the pin joint by which the user can tighten a nut to lock it in place, or using a spring-ratchet system (pictured below). 
+				
+				\includegraphics[scale=0.5]{man_thumb_detail.PNG}
+				
+				The ratchet design works by pulling the thumb towards the fingertips, disengaging the ratchet, allowing for opposed rotation. This design is preferable because the spring holds the joint in place during normal operation, since the linear motion required to disengage the ratchet is in the opposite direction to the forces on the joint during standard use.		
+				This adds a degree of freedom to the joint since linear motion is allowed in the axis of rotation. The extra DOF is constrained in range by the end-stops inside the joint.
+				
+				
+				
 			}
 			\item \textbf{Geared} {
 				
-				\includegraphics[scale=0.5]{Driven_thumb.PNG}
+				\includegraphics[scale=0.55]{Driven_thumb.PNG}
+				
 				This method is analogous to the geared joint finger design, however it allows one more degree of freedom since the second joint can be operated independently of opposable rotation. 
 			}		
 			\end{enumerate}	
@@ -225,15 +245,15 @@ TODO explain general material selection reasoning (in that they are all printed 
 	\section{Wrist}
 	
 		\subsection{Degrees of freedom and constraints}
-		TODO briefly explain (with cite) why this is needed and why only 1 DOF is reasonable
+		Wrist articulation in the human hand is complex, allowing for three rotational degrees of freedom. For the design of the prosthetic, this amount of freedom is infeasible given our limitations and design constraints. A rigidly attached wrist joint will however impose unwanted difficulty in everyday life; since the ability to perform basic tasks, for example picking up objects lying flat on a table, to more complex tasks like typing. With that in mind we considered two transmission methods which allow for a single degree of rotation along the axis of the wrist. A manual articulation option was also proposed as an alternative.
 		
 		\subsection{Transmission}	
 		
 			
 			\begin{enumerate}
-			\item \textbf{Rigid} {
+			\item \textbf{Manual operation} {
 			
-				A fixed wrist joint is the simplest to manufacture, and will reduce the overall weight due to the need for one fewer motors.
+				Utilizing the same spring-ratchet design as the manual thumb joint, the ratchet can be disengaged by pulling the hand toward the forearm, thus allowing for free rotation. As with the thumb, disengaging the ratchet is designed to avoid unintended articulation radially during normal use.
 			}	
 			\item \textbf{Planetary gearbox} {
 
@@ -251,13 +271,26 @@ Belt drives can mitigate the noise factor associated with printed plastic on pla
 	
 	\section{Socket}
 		
-		\subsection{Solid, generic}
-		
-
-		
 		\subsection{Solid, 3D printed}
+		3D printed sockets allow for a high level of customizability in terms of matching the shape and size of the component to the needs of the patient. A fully enclosed shell has the further advantage of providing a housing for sensitive electronics and motors which may be prone to water damage if exposed. 3D printed materials lack the strength of parts made by injection moulding or other traditional manufacturing methods due to layer adhesion weaknesses. Large printed components also are slow to produce, and must be made to order, increasing lead time.
+		
+		The printed socket design fits over the stump and is segmented in two, clasping on either side to firmly hold the prosthetic in place. For amputees with insufficient remaining arm to achieve a stable mount, a second component can be attached to the upper arm to prevent it from falling off or becoming loose. To minimise user discomfort when the arm is clasped to the stump, some type of interface material needs to be used where the prosthetic contacts the user, particularly in areas where the most force is transferred.
+		
+			\subsubsection{Interface materials}		
+		\begin{enumerate}
+		\item \textbf{Moulded silicone} {
+		
+		Silicone moulds can be made relatively simply by injecting silicone into the socket while the user holds their stump in the desired position inside the prosthetic, protected by a plastic film. By moulding the silicone to the shape of the stump in this way, a near perfect fit can be achieved. The quality of the mould may deteriorate over time as the silicone undergoes creep from being deformed at body temperature for the hundreds of hours of its intended life time. 
+		}
+		\item \textbf{Thermo-form EVA foam} {
+		 
+		Ethyl Vinyl Acetate (EVA) is a lightweight polymer foam often used in ski boots. EVA has a softening temperature of $90^{\circ}$C, at which point all the 
+		}
+		\item \textbf{Fabric} {
 		
 		
+		}
+		\end{enumerate}
 		
 		\subsection{Non-rigid/Strap on}
 		
@@ -314,7 +347,6 @@ Full 3 & • & • & • & • & • & • & • & • & • \\
 
 \pagebreak
 \part{Actuator Selection}
-
 \begin{multicols}{2}
 
 	\section{Preamble}
@@ -398,14 +430,11 @@ Full 3 & • & • & • & • & • & • & • & • & • \\
 		\hline
 	\end{tabular} 
 
-
+\vspace{1cm}
 	In the evaluation of $D_{overall}$, we rescale back to a 0 to 1 range to compensate for some fields not being included as they are not applicable. We can clearly see that the SY20STH30-0604A is best for our design as it satisfies all essential criteria and scores the best in the relevant desirable criteria.
-
-
 \newpage
 \appendix
 
-\bibliography{proj}{}
 \bibliographystyle{plain}
 
 
